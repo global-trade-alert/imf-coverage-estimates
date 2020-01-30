@@ -139,6 +139,7 @@ for(agg in inward.types){
                        intervention.types=imf.types,
                        keep.type = T,
                        importers=individual.countries,
+                       keep.importers=T,
                        group.importers=F,
                        coverage.period = c(min(years),max(years)))
     
@@ -202,6 +203,7 @@ for(agg in outward.types){
                        intervention.types=imf.types,
                        keep.type = T,
                        exporters=individual.countries,
+                       keep.exporters = T,
                        group.exporters=F,
                        coverage.period = c(min(years),max(years)))
     
