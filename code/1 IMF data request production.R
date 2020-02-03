@@ -150,7 +150,7 @@ for(agg in inward.types){
     coverage=coverage[,c("Importing country","level",years)]
     names(coverage)=c("importer","level",paste("share.",years,sep=""))
     
-    ic.coverage=rbind(ic.coverage, coverage)
+    ic.coverage=unique(rbind(ic.coverage, coverage))
     rm(coverage)
     
   }
@@ -216,7 +216,7 @@ for(agg in outward.types){
     coverage=coverage[,c("Exporting country","level",years)]
     names(coverage)=c("exporter","level",paste("share.",years,sep=""))
     
-    ec.coverage=rbind(ec.coverage, coverage)
+    ec.coverage=unique(rbind(ec.coverage, coverage))
     rm(coverage)
     
   }
