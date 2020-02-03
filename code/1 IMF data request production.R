@@ -163,13 +163,11 @@ import.coverage=merge(import.coverage, ic.coverage, by=c("importer","level"), al
 import.coverage[is.na(import.coverage)]=0
 import.coverage=import.coverage[order(import.coverage$importer),]
 
-write.xlsx(import.coverage, file=output.path, row.names = F, sheetName="Import coverage", append=T)
+xlsx::write.xlsx(import.coverage, file=paste0(output.path, "GTA data for the IMF - incl. FDI.xlsx"), row.names = F, sheetName="Import coverage", append=T)
 
 
 
 ## export coverage
-export.coverage=expand.grid(exporter=unique(country.names$name), level=outward.types, stringsAsFactors = F)
-
 ec.coverage=data.frame()
 
 for(agg in outward.types){
@@ -179,8 +177,10 @@ for(agg in outward.types){
   
   ## World total
   gta_trade_coverage(gta.evaluation = gta.evaluation,
+                     affected.flows="outward",
                      intervention.types=imf.types,
                      keep.type = T,
+                     implementer.role = "exporter",
                      coverage.period = c(min(years),max(years)))
   
   
@@ -205,6 +205,8 @@ for(agg in outward.types){
                        exporters=individual.countries,
                        keep.exporters = T,
                        group.exporters=F,
+                       affected.flows="outward",
+                       implementer.role = "exporter",
                        coverage.period = c(min(years),max(years)))
     
     coverage=trade.coverage.estimates[,c(2, seq(4,ncol(trade.coverage.estimates),1))]
@@ -214,16 +216,17 @@ for(agg in outward.types){
     coverage=coverage[,c("Exporting country","level",years)]
     names(coverage)=c("exporter","level",paste("share.",years,sep=""))
     
-    ic.coverage=rbind(ec.coverage, coverage)
+    ec.coverage=rbind(ec.coverage, coverage)
     rm(coverage)
     
   }
   
   print(agg)
 }
-names(ec.coverage)=c("exporter", "level", paste("Share of own exports affected by export measures or export subsidies in ",years,sep=""))
+names(ec.coverage)=c("exporter", "level", paste("Share of own exports affected by export restrictions in ",years,sep=""))
 
-export.coverage=merge(export.coverage, ec.coverage, by=c("exporter","level"), all.x=T)
+export.coverage=ec.coverage
 export.coverage[is.na(export.coverage)]=0
+export.coverage=export.coverage[order(export.coverage$exporter),]
 
-write.xlsx(export.coverage, file=output.path, row.names = F, sheetName="Export coverage", append=T)
+xlsx::write.xlsx(export.coverage, file=paste0(output.path, "GTA data for the IMF - incl. FDI.xlsx"), row.names = F, sheetName="Export coverage", append=T)
