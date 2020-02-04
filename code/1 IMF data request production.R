@@ -101,7 +101,7 @@ xlsx::write.xlsx(fdi, file=paste0(output.path, "GTA data for the IMF - incl. FDI
 import.coverage=expand.grid(importer=unique(fdi$`Implementing country`), level=inward.types, stringsAsFactors = F)
 
 ## all inward instruments
-imf.types=imf.instruments$intervention_type[imf.instruments$aggregate %in% inward.types]
+imf.types=imf.instruments$intervention.type[imf.instruments$imf.label %in% inward.types]
 
 ic.coverage=data.frame()
 
